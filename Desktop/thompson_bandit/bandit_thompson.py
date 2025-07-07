@@ -1,5 +1,6 @@
 import random
 import matplotlib.pyplot as plt
+import time 
 
 # Simulated environment: true probabilities for 10 slot machines
 n_arms = 10
@@ -30,6 +31,10 @@ for n in range(N):
         successes[arm] += 1
     else:
         failures[arm] += 1
+
+    # ✅ 🎲 Animation (ADD THIS inside the loop)
+    print(f"🎰 Round {n+1}: Pulled Arm {arm} | Reward: {reward} | Total Reward: {sum(rewards)}")
+    time.sleep(0.1)  # Slows it down for animation
 
 # Step 3: Show results
 print(f"True conversion rates: {true_conversion_rates}")
