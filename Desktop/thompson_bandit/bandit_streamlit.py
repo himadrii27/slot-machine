@@ -38,6 +38,11 @@ if st.button("🎯 Pull an Arm"):
     ]
     arm = sampled_theta.index(max(sampled_theta))
 
+    # Show the guessed scores
+    with st.expander("📈 AI's Confidence This Round"):
+        for i, val in enumerate(sampled_theta):
+            st.write(f"Machine {i}: sampled score = {val:.3f}")
+
     # Simulate reward
     reward = 1 if random.random() < st.session_state.true_rates[arm] else 0
 
