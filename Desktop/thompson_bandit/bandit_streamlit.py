@@ -11,8 +11,19 @@ if "n_arms" not in st.session_state:
     st.session_state.rewards = []
     st.session_state.selected_arms = [0] * st.session_state.n_arms
     st.session_state.round = 0
+    st.session_state.total_reward = 0
 
 st.title("🎰 Thompson Sampling Simulator")
+st.caption("An interactive casino game powered by reinforcement learning")
+
+st.markdown("### 🎰 Slot Machines")
+
+cols = st.columns(st.session_state.n_arms)
+for i, col in enumerate(cols):
+    col.markdown(f"🎰 **Machine {i}**")
+    col.progress(st.session_state.selected_arms[i] / max(1, sum(st.session_state.selected_arms)))
+
+
 
 # Show hidden conversion rates (debugging or testing)
 if st.checkbox("Show true conversion rates"):
@@ -39,11 +50,20 @@ if st.button("🎯 Pull an Arm"):
         st.session_state.failures[arm] += 1
     st.session_state.round += 1
 
-    st.success(f"Round {st.session_state.round}: Pulled Arm {arm} 🎉 | Reward: {reward}")
+    # st.success(f"Round {st.session_state.round}: Pulled Arm {arm} 🎉 | Reward: {reward}")
+    if reward:
+        st.success(f"🎉 Round {st.session_state.round}: Hit Machine {arm} and won 🪙 1 coin!")
+    else:
+        st.warning(f"❌ Round {st.session_state.round}: Machine {arm} gave nothing. Try again!")
+
 
 # Show reward chart
 st.subheader("📈 Total Reward Over Time")
 st.line_chart(st.session_state.rewards)
+st.subheader("🏆 Scoreboard")
+st.metric(label="💰 Total Coins Won", value=sum(st.session_state.rewards))
+st.metric(label="🎯 Total Spins", value=st.session_state.round)
+
 
 # Show arm selection bar chart
 st.subheader("📊 Arm Selection Frequency")
